@@ -4,12 +4,15 @@
 <main>
     <section id="catLeft">
         <!-- Create a for loop that will iterate through the list of categories -->
+            {% for c in categories %}
 
             <!-- Insert an if statement to check if the selectedCategory parameter is the same as the categoryId> -->
+                {% if c.categoryId == selectedCategory %}
 
                 <!-- If so, create a p element displaying the category name
 				     Use class='selectedCategory' to style the category
                 -->
+                <p class='selectedCategory'>{{ c.categoryName }}</p>
 
 				{% else %}
                 
@@ -17,29 +20,40 @@
 					 corresponding categoryId as a parameter and displaying the category name.
 					 use class='notSelectedCategory' to style the category 
                 -->
-
+                <p class='notSelectedCategory'>
+                    <a href="{{ url_for('category', category_id=c.categoryId) }}">{{ c.categoryName }}</a>
+                </p>
+                {% endif %}
+            {% endfor %}
 
     </section>
     <section id="catRight">
         <!-- Create a for loop that will iterate through the list of list of books -->
+            {% for b in books %}
         
                 <div class='book'>
                     <!-- Insert the book image stored in the static folder and the book as the alt text -->
-                    <div><img src='book image' alt='book name'/></div>
+                    <div>
+                        <img src="{{ url_for('static',
+                             filename='images/books/' + b.image) }}"
+                             alt="{{ b.title }}">
+                    </div>
                     <div class='bookDetailBox'>
                         <!-- Insert the corresponding field into each of the following rows -->
-                        <p class='bookTitle'>title of the book</p>
-                        <p class='bookDetail'>by Author name</p>
-                        <p class='bookDetail'>ISBN: number</p>
-                        <p class='bookPrice'>$cost</p>
-                            <a class='actionButton' href='#'>Add to cart</a>
+                        <p class="bookTitle">{{ b.title }}</p>
+                        <p class="bookDetail">by {{ b.author }}</p>
+                        <p class="bookDetail">ISBN: {{ b.isbn }}</p>
+                        <p class="bookPrice">${{ "%.2f"|format(b.price) }}</p>
+        
+                        <a class="actionButton" href="#">Add to cart</a>
                         <!-- Insert an if statement such that if the ReadNow flag is set include the Read Now button-->
-                            {% if statement goes in here%}
-                                <a class='actionButton' href='#'>Read Now</a>
-                            {% endif %}
+                        {% if b.readnow == 1 %}
+                        <a class="actionButton" href="#">Read Now</a>
+                        {% endif %}        
                     </div>
                 </div>
 		<!-- This is where the for loop code ends -->
+            {% endfor %}
 
     </section>
 </main>
